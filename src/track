@@ -1,0 +1,47 @@
+#!/bin/bash
+
+set -e
+
+src_dir=$(dirname $0)
+tracker_dir=$(dirname $src_dir)/notes
+
+if [ $1 == "--sum" ]; then
+    
+    filename=$2
+    tracker_file=$tracker_dir/$filename.csv
+
+    if [ ! -f $tracker_file ]; then
+        echo "No such file."
+        exit
+    fi
+
+    sum=$(awk -F',' '{sum+=$2;}END{print sum;}' $tracker_file)
+    echo $sum
+
+    exit
+
+elif [ $1 == "--clear" ]; then
+    
+    filename=$2
+    tracker_file=$tracker_dir/$filename.csv
+
+    rm $tracker_file
+    echo "Cleared $filename"
+
+    exit
+
+else
+
+    filename=$1
+    tracker_file=$tracker_dir/$filename.csv
+
+fi
+
+mkdir -p $tracker_dir
+
+if [ ! -f $note_file ]; then
+    touch $tracker_file
+fi
+
+echo "$(date "+%d/%m/%Y %H:%M"), $2" >> $tracker_file
+
