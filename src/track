@@ -64,6 +64,13 @@ elif [ $1 == "--clear" ]; then
 
     exit
 
+elif [ $1 == "--show" ]; then
+
+    filename=$2
+    tracker_file=$tracker_dir/$filename.csv
+
+    awk 'BEGIN{print "DateTime, Value"}{print $0}' $tracker_file
+
 else
 
     filename=$1

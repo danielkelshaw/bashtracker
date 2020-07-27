@@ -27,11 +27,18 @@ This will create a file at: `/path/to/repo/notes/<name>.csv` with the current Da
 ### **Sum a Quantity:**
 
 ```bash
-track --sum <name>
+track --sum <name> <-n[mdY]>
 ```
 
-This will provide a sum of the values in the `/notes/<name>.csv` file.
+This will provide a sum of the values in the last `<-n[mdY]>`
 
+### **Count a Quantity:**
+
+```bash
+track --count <name> <-n[mdY]>
+```
+
+This will count the number of occurences in the last `<-n[mdY]>`
 
 ### **Clear Tracking:**
 
