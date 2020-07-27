@@ -6,8 +6,9 @@ src_dir=$(dirname $0)
 tracker_dir=$(dirname $src_dir)/notes
 
 if [ $1 == "--sum" ]; then
-    
+
     filename=$2
+    filter=$3
     tracker_file=$tracker_dir/$filename.csv
 
     if [ ! -f $tracker_file ]; then
@@ -15,8 +16,36 @@ if [ $1 == "--sum" ]; then
         exit
     fi
 
-    sum=$(awk -F',' '{sum+=$2;}END{print sum;}' $tracker_file)
-    echo $sum
+    if [ -z $filter ]; then
+        date=0;
+    else
+        date=$(date -v"$filter" +%s)
+    fi
+
+    val=$(awk -v date=$date '{cmd="date -jf %d/%m/%Y "$1" +%s"; cmd | getline rd; close(cmd);} rd > date {sum+=$3}END{print sum}' $tracker_file)
+    echo $val
+
+    exit
+
+elif [ $1 == "--count" ]; then
+    
+    filename=$2
+    filter=$3
+    tracker_file=$tracker_dir/$filename.csv
+
+    if [ ! -f $tracker_file ]; then
+        echo "No such file."
+        exit
+    fi
+
+    if [ -z $filter ]; then
+        date=0;
+    else
+        date=$(date -v"$filter" +%s)
+    fi
+
+    val=$(awk -v date=$date '{cmd="date -jf %d/%m/%Y "$1" +%s"; cmd | getline rd; close(cmd);} rd > date {sum++}END{print sum}' $tracker_file)
+    echo $val
 
     exit
 
@@ -25,7 +54,12 @@ elif [ $1 == "--clear" ]; then
     filename=$2
     tracker_file=$tracker_dir/$filename.csv
 
+    if [ ! -f $tracker_file ]; then
+        echo "No such file."
+        exit
+    fi
     rm $tracker_file
+
     echo "Cleared $filename"
 
     exit
@@ -35,13 +69,13 @@ else
     filename=$1
     tracker_file=$tracker_dir/$filename.csv
 
+    mkdir -p $tracker_dir
+
+    if [ ! -f $note_file ]; then
+        touch $tracker_file
+    fi
+
+    echo "$(date "+%d/%m/%Y %H:%M"), $2" >> $tracker_file
+
 fi
-
-mkdir -p $tracker_dir
-
-if [ ! -f $note_file ]; then
-    touch $tracker_file
-fi
-
-echo "$(date "+%d/%m/%Y %H:%M"), $2" >> $tracker_file
 
