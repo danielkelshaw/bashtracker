@@ -40,6 +40,14 @@ track --count <name> <-n[mdY]>
 
 This will count the number of occurences in the last `<-n[mdY]>`
 
+### **Show a Quantity:**
+
+```bash
+track --show <name>
+```
+
+This will `cat` out the relevant file - displaying the contents.
+
 ### **Clear Tracking:**
 
 ```bash
