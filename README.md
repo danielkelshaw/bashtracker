@@ -13,7 +13,7 @@ cd bashtracker
 Add the `src` directory to your path:
 
 ```bash
-echo "export PATH=\"\$PATH:$(pwd)/src\"" >> ~/.zshrc
+echo "export PATH=\$PATH:$(pwd)/src" >> ~/.zshrc
 ```
 
 ### **Track a Quantity:**
